@@ -1,0 +1,13 @@
+# Virtual environment
+venv/
+env/
+
+# Byte-compiled files
+__pycache__/
+*.pyc
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Windows specific
+Thumbs.db
