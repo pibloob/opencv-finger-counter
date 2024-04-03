@@ -34,16 +34,20 @@ This project aims to create an efficient, open-source application using Python a
 ### Installation
 
 1. Clone this repository to your local machine.
-    git clone https://github.com/your-username/finger-counter.git
+
+    `git clone https://github.com/your-username/finger-counter.git`
 
 2. Navigate to the project directory.
-    cd finger-counter
+
+    `cd finger-counter`
 
 3. Install the required dependencies.
-    pip install -r requirements.txt
+
+    `pip install -r requirements.txt`
 
 4. Running the Application. Execute the main script to start the application.
-    python finger_counter.py
+
+    `python finger_counter.py`
 
 # Contributing
 
