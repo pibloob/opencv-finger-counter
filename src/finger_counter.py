@@ -30,15 +30,11 @@ def main():
         # Apply Gaussian blur to reduce noise and details
         # blurred = cv2.GaussianBlur(gray, (5, 5), 0)
         
-        # Convert to HSV color space for skin detection
-        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        ycrcb = cv2.cvtColor(frame, cv2.COLOR_BGR2YCrCb)
+        lower_skin = np.array([0, 133, 77], dtype=np.uint8)
+        upper_skin = np.array([255, 173, 127], dtype=np.uint8)
+        skin_mask = cv2.inRange(ycrcb, lower_skin, upper_skin)
 
-        # Define skin color range in HSV
-        lower_skin = np.array([0, 48, 40], dtype=np.uint8)       # Lower range of HSV for skin
-        upper_skin = np.array([20, 255, 255], dtype=np.uint8)   # upper range of HSV for skin
-
-        # Create a mask for skin color
-        skin_mask = cv2.inRange(hsv, lower_skin, upper_skin)
 
         # Apply a series of erosions and dilations to the mask
         # To reduce noise and make the detected skin regions more contiguous.
@@ -78,6 +74,7 @@ def main():
                 hull_indices = cv2.convexHull(hand_contour, returnPoints=False)
                 defects = cv2.convexityDefects(hand_contour, hull_indices) 
                 if defects is not None:
+                    finger_count = 0
                     for i in range(defects.shape[0]):
                         s, e, f, d = defects[i, 0]
                         start = tuple(hand_contour[s][0])
@@ -95,10 +92,13 @@ def main():
 
                         # Filter defects by depth and angle
                         if depth > 10 and angle < 90:  # Thresholds for depth and angle
+                            finger_count += 1
                             cv2.circle(frame, far, 5, [0, 0, 255], -1)  # Draw defect points in blue
-
-            else:
-                print("No valid hand contour found")
+                # Vingers = defecten + 1
+                fingers = finger_count + 1
+                # Toon het aantal vingers op het scherm
+                cv2.putText(frame, f'Fingers: {fingers}', (50, 50),
+                cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 255, 255), 3)
 
         # Display the frame with contours:
         # This function displays the frame in a window named 'Window Name'. 
